@@ -8,6 +8,8 @@ const urlSearch = new URLSearchParams(window.location.search);
 
 const username = urlSearch.get("username");
 
+var fruit = {};
+
 socket.emit("connectToGame", {
     username
 })
@@ -21,6 +23,8 @@ document.addEventListener("keydown", (event) => {
         "ArrowLeft": "left",
     }
 
+    updateFruit()
+
     socket.emit("move", {
         direction: key_direction[event.key]
     })
@@ -30,8 +34,12 @@ socket.on("players", (data) => {
     updateCanvas(data);
 })
 
+socket.on("fruit", (data) => {
+    fruit = { ...data };
+    updateFruit();
+})
+
 function updateCanvas(players) {
-    console.log(players);
     ctx.fillStyle = "green";
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -39,5 +47,11 @@ function updateCanvas(players) {
     players.forEach((player) => {
         ctx.fillRect(SIZE * player.position.x, SIZE * player.position.y, SIZE, SIZE);
     })
+
+    updateFruit();
+}
+
+function updateFruit() {
+    ctx.fillRect(SIZE * fruit.position.x, SIZE * fruit.position.y, SIZE, SIZE);
 }
 

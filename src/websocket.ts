@@ -43,6 +43,7 @@ interface IUser {
     socket_id: string;
     username: string;
     position: IVector;
+    score: number;
 }
 
 const users: IUser[] = [];
@@ -50,6 +51,21 @@ const users: IUser[] = [];
 interface IMoveRequest {
     direction: "up" | "down" | "left" | "right";
 }
+
+interface IFruit {
+    position: IVector;
+    size: 1;
+}
+
+const fruit: IFruit = {
+    position: {
+        x: 0,
+        y: 0,
+    },
+    size: 1,
+};
+
+setFruit({ x: 0, y: 0 });
 
 io.on("connection", async (socket) => {
     socket.on("connectToGame", (data) => {
@@ -69,12 +85,14 @@ io.on("connection", async (socket) => {
                     x: 8,
                     y: 8,
                 },
+                score: 0,
             };
 
             users.push(newUser);
         }
 
         io.emit("players", users);
+        socket.emit("fruit", fruit);
     });
 
     socket.on("move", (data: IMoveRequest) => {
@@ -103,8 +121,28 @@ function movePlayer(user: IUser, new_position: IVector) {
     user.position.x += new_position.x;
     user.position.y += new_position.y;
 
-    console.log("--------------------------");
-    console.log(users);
+    checkFruit(user);
 
     io.emit("players", users);
+}
+
+function checkFruit(user: IUser) {
+    if (
+        user.position.x === fruit.position.x &&
+        user.position.y === fruit.position.y
+    ) {
+        score(user, 1);
+    }
+}
+
+function score(user: IUser, size: number) {
+    user.score += size;
+    console.log(`${user.username} scored`);
+}
+
+function setFruit(position: IVector) {
+    fruit.position.x = position.x;
+    fruit.position.y = position.y;
+
+    io.emit("fruit", fruit);
 }
