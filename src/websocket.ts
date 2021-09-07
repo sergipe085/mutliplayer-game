@@ -65,8 +65,6 @@ const fruit: IFruit = {
     size: 1,
 };
 
-setFruit({ x: 0, y: 0 });
-
 io.on("connection", async (socket) => {
     socket.on("connectToGame", (data) => {
         const { username } = data;
@@ -138,6 +136,13 @@ function checkFruit(user: IUser) {
 function score(user: IUser, size: number) {
     user.score += size;
     console.log(`${user.username} scored`);
+
+    const newFruitPosition: IVector = {
+        x: randomIntFromInterval(0, 16),
+        y: randomIntFromInterval(0, 16),
+    };
+
+    setFruit(newFruitPosition);
 }
 
 function setFruit(position: IVector) {
@@ -145,4 +150,8 @@ function setFruit(position: IVector) {
     fruit.position.y = position.y;
 
     io.emit("fruit", fruit);
+}
+
+function randomIntFromInterval(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }

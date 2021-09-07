@@ -8,7 +8,13 @@ const urlSearch = new URLSearchParams(window.location.search);
 
 const username = urlSearch.get("username");
 
-var fruit = {};
+var fruit = {
+    position: {
+        x: 0,
+        y: 0,
+    },
+    size: 1
+};
 
 socket.emit("connectToGame", {
     username
