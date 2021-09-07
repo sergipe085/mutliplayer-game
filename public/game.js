@@ -40,11 +40,14 @@ socket.on("fruit", (data) => {
 })
 
 function updateCanvas(players) {
-    ctx.fillStyle = "green";
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     players.forEach((player) => {
+        if (player.username === username) {
+            ctx.fillStyle = "green";
+        } else {
+            ctx.fillStyle = "gray";
+        }
         ctx.fillRect(SIZE * player.position.x, SIZE * player.position.y, SIZE, SIZE);
     })
 
@@ -52,6 +55,7 @@ function updateCanvas(players) {
 }
 
 function updateFruit() {
+    ctx.fillStyle = "red";
     ctx.fillRect(SIZE * fruit.position.x, SIZE * fruit.position.y, SIZE, SIZE);
 }
 
