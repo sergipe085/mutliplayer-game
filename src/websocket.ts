@@ -46,7 +46,7 @@ interface IUser {
     score: number;
 }
 
-const users: IUser[] = [];
+let users: IUser[] = [];
 
 interface IMoveRequest {
     direction: "up" | "down" | "left" | "right";
@@ -135,7 +135,10 @@ function checkFruit(user: IUser) {
 
 function score(user: IUser, size: number) {
     user.score += size;
-    console.log(`${user.username} scored`);
+
+    users = sortedUsers(users);
+
+    io.emit("score", users);
 
     const newFruitPosition: IVector = {
         x: randomIntFromInterval(0, 16),
@@ -154,4 +157,17 @@ function setFruit(position: IVector) {
 
 function randomIntFromInterval(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function sortedUsers(users: IUser[]) {
+    return users.sort((a, b) => {
+        if (a.score > b.score) {
+            return -1;
+        }
+        if (a.score < b.score) {
+            return 1;
+        }
+
+        return 0;
+    });
 }

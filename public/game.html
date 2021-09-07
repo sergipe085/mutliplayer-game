@@ -4,11 +4,20 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="game.css">
     <title>Document</title>
 </head>
 <body>
-    <canvas id="canvas" width="543" height="543" style="border:1px solid #000000;">
-    </canvas>
+    <div class="container">
+        <canvas id="canvas" width="543" height="543" style="border:1px solid #000000;">
+        </canvas>
+    
+        <div class="score-container" id="score-container">
+            <!-- <div class="player">
+                <p> 33 - username </p>
+            </div> -->
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="./game.js"></script>

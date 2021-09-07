@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+}
+
+.score-container {
+    margin-left: 25px;
+    border: 1px solid;
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 220px;
+}
